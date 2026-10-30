@@ -1,0 +1,222 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated background orbs */
+.login-container::before,
+.login-container::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    animation: float 20s ease-in-out infinite;
+}
+
+.login-container::before {
+    width: 400px;
+    height: 400px;
+    background: rgba(99, 102, 241, 0.15);
+    top: -100px;
+    right: -100px;
+}
+
+.login-container::after {
+    width: 500px;
+    height: 500px;
+    background: rgba(139, 92, 246, 0.1);
+    bottom: -150px;
+    left: -150px;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-30px) rotate(5deg);
+    }
+
+    50% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    75% {
+        transform: translateY(30px) rotate(-5deg);
+    }
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.6s ease forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.login-logo {
+    width: 64px;
+    height: 64px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-lg);
+    font-size: 28px;
+    box-shadow: var(--shadow-glow);
+}
+
+.login-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.login-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.login-button {
+    margin-top: var(--space-md);
+    height: 48px;
+    font-size: 1rem;
+}
+
+.login-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    color: var(--accent-danger);
+    font-size: 0.875rem;
+    text-align: center;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-8px);
+    }
+
+    40% {
+        transform: translateX(8px);
+    }
+
+    60% {
+        transform: translateX(-8px);
+    }
+
+    80% {
+        transform: translateX(8px);
+    }
+}
+
+.login-footer {
+    margin-top: var(--space-xl);
+    text-align: center;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-primary);
+}
+
+.login-footer p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* Rate Limiting Styles */
+.login-error.rate-limited {
+    background: rgba(251, 146, 60, 0.1);
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    padding: var(--space-lg);
+    animation: none;
+}
+
+.rate-limit-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-sm);
+}
+
+.rate-limit-message {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-warning);
+    margin-bottom: var(--space-xs);
+}
+
+.rate-limit-countdown {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.rate-limit-countdown strong {
+    font-family: var(--font-mono);
+    color: var(--accent-warning);
+    font-size: 1.1rem;
+}
+
+.btn-disabled {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-muted) !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+.btn-disabled:hover {
+    transform: none !important;
+}
+
+.input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--bg-tertiary);
+}

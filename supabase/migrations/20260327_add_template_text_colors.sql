@@ -1,0 +1,14 @@
+-- Migration: Add text color columns for template placeholders
+-- Date: 2026-03-27
+
+ALTER TABLE templates
+ADD COLUMN IF NOT EXISTS link_color TEXT NOT NULL DEFAULT '#000000';
+
+ALTER TABLE templates
+ADD COLUMN IF NOT EXISTS name_color TEXT NOT NULL DEFAULT '#000000';
+
+ALTER TABLE templates
+ADD COLUMN IF NOT EXISTS event_color TEXT NOT NULL DEFAULT '#000000';
+
+ALTER TABLE templates
+ADD COLUMN IF NOT EXISTS date_color TEXT NOT NULL DEFAULT '#000000';

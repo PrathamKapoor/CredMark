@@ -1,0 +1,6 @@
+name,email,google_link,nickname,note
+John Doe,john.doe@example.com,https://www.google.com/search?q=John+Doe,Johnny,"Loyal customer"
+Jane Smith,jane.smith@example.com,https://www.google.com/search?q=Jane+Smith,Janie,"Frequent buyer"
+Bob Johnson,bob.johnson@example.com,https://www.google.com/search?q=Bob+Johnson,bobby,"New customer"
+Alice Williams,alice.williams@example.com,https://www.google.com/search?q=Alice+Williams,Ally,"VIP member"
+Charlie Brown,charlie.brown@example.com,https://www.google.com/search?q=Charlie+Brown,Chuck,"Occasional visitor"

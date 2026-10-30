@@ -1,0 +1,161 @@
+/* GridMotion.css */
+.noscroll {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.intro {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 250px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.gridMotion-container {
+  gap: 0.25rem;
+  flex: none;
+  position: relative;
+  width: 150vw;
+  height: 150vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: rotate(-15deg);
+  transform-origin: center center;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .gridMotion-container {
+    width: 200vw;
+    height: 150vh;
+    gap: 0.15rem;
+  }
+
+  .row {
+    gap: 0.5rem;
+  }
+
+  .row__item {
+    min-width: 150px;
+    height: 140px;
+  }
+}
+
+/* Row container - masks the overflow */
+.row {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.125rem 0;
+}
+
+/* The track contains items and animates */
+.row__track {
+  display: flex;
+  gap: 0.5rem;
+  width: max-content;
+  animation: scroll-left linear infinite;
+}
+
+.row__track--reverse {
+  animation-name: scroll-right;
+}
+
+/* Keyframes for smooth infinite scroll */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Pause animation on hover for better UX */
+.row:hover .row__track {
+  animation-play-state: paused;
+}
+
+.row__item {
+  flex-shrink: 0;
+  min-width: 322px;
+  height: 230px;
+}
+
+.row__item-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.row__item-inner:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.row__item-img {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.row__item-content {
+  padding: 1rem;
+  text-align: center;
+  z-index: 1;
+}
+
+.fullview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.fullview .row__item-inner {
+  border-radius: 0px;
+}

@@ -1,0 +1,54 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: test-only-password
+          POSTGRES_DB: truemark_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d truemark_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: ci-placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: ci-placeholder-service-key
+      NEXT_PUBLIC_BASE_URL: https://certificates.example.invalid
+      ALLOWED_ORIGINS: https://certificates.example.invalid
+      EMAIL_PROVIDER: capture
+      EMAIL_DELIVERY_ENABLED: 'false'
+      DATABASE_TEST_URL: postgres://postgres:test-only-password@localhost:5432/truemark_test
+      REQUIRE_POSTGRES_TESTS: 'true'
+      REQUIRE_DATABASE_TESTS: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+        env:
+          NODE_ENV: test
+      - run: npm run test:postgres
+        env:
+          NODE_ENV: test
+      - run: npm run worker:check
+      - run: npm run fonts:check
+      - run: npm run migrate -- --check
+      - run: npm run build
+        env:
+          EMAIL_PROVIDER: gmail
+          NODE_ENV: production

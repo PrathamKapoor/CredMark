@@ -1,0 +1,45 @@
+/* TRACING ANIMATION:
+  1. Start with the dash offset equal to length (invisible).
+  2. Animate offset to 0 (fully drawn).
+  3. Fade out and repeat.
+*/
+@keyframes traceDraw {
+  0% {
+    stroke-dashoffset: var(--path-length);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
+}
+
+.gradient-loader-path {
+  stroke: url(#animatedGradient);
+  fill: none; /* Ensures only the neon line is visible */
+  stroke-width: 15; /* Adjusted thickness for this complex logo */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  /* The Logic: 
+     Set the dash array to the full length of the line.
+     We then animate the 'offset' of that dash to make it appear drawn.
+  */
+  stroke-dasharray: var(--path-length);
+  stroke-dashoffset: var(--path-length);
+  
+  /* Animation Breakdown:
+     traceDraw: Draws the line over 3 seconds.
+     fadeInOut: Ensures it gently fades out before restarting (optional smoothness).
+  */
+  animation: 
+    traceDraw 2s ease-in-out infinite alternate;
+}

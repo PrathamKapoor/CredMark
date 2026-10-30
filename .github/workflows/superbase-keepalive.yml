@@ -1,0 +1,18 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    - cron: '0 */18 * * *'   # Every 6 hours
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Supabase
+        run: |
+          test -n "$SUPABASE_URL"
+          curl --fail --silent --show-error --head "$SUPABASE_URL"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
