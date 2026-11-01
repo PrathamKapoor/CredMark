@@ -46,7 +46,7 @@ export default function CirculationClient({templates,folders}:{templates:Templat
     {message && <p className="circulation-notice" role="status">{message}</p>}
     <section className="circulation-panel" aria-labelledby="configure"><h2 id="configure">1. Configure a draft</h2>
       <div className="circulation-grid">
-        <label>Event<select value={eventId} onChange={e=>setEventId(e.target.value)}><option value="">Choose event</option>{events.map(e=><option key={e.id} value={e.id}>{e.name} · {e.date_of_issue}</option>)}</select></label>
+        <label>Event<select value={eventId} onChange={e=>setEventId(e.target.value)}><option value="">Choose event</option>{events.map(e=><option key={e.id} value={e.id}>{e.name} · {e.certificate_type} · {e.date_of_issue}</option>)}</select></label>
         <label>Template<select value={templateId} onChange={e=>setTemplateId(e.target.value)}><option value="">Choose template</option>{templates.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}</select></label>
         <label>Destination folder<select value={folderId} onChange={e=>setFolderId(e.target.value)}><option value="">Choose folder</option>{folders.map(f=><option key={f.id} value={f.id}>{f.name}</option>)}</select></label>
         <label>Distribution<select value={String(sendEmail)} onChange={e=>setSendEmail(e.target.value==='true')}><option value="false">Generate PDFs only</option><option value="true">Generate PDFs and email</option></select></label>

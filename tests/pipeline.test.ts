@@ -52,7 +52,7 @@ describe('real issuance vertical slice',()=>{
    expect((await f.db.query('SELECT * FROM email_attempts')).rows).toHaveLength(100);
    const certificates=await f.db.query<{pdf_object_path:string;pdf_sha256:string;certificate_code:string}>('SELECT pdf_object_path,pdf_sha256,certificate_code FROM certificates');expect(certificates.rows).toHaveLength(100);
    for(const cert of certificates.rows){const bytes=f.adapter.objects.get(`certificates/${cert.pdf_object_path}`)!;expect(createHash('sha256').update(bytes).digest('hex')).toBe(cert.pdf_sha256);expect((await PDFDocument.load(bytes)).getPageCount()).toBe(1);}
-   for(const message of messages){expect(message.text).toContain('http://localhost:3000/api/verify/');expect(message.text).not.toContain('token=');}
+   for(const message of messages){expect(message.text).toContain('http://localhost:3000/api/verify/');expect(message.text).not.toContain('token=');expect(message.subject).toBe('Thank you for participating in Vertical Slice – Certificate');}
    const again=await submitBatch({...f.request,idempotency_key:randomUUID()},f.creator,true);await drain(f.repo,provider(messages));
    expect((await f.db.query('SELECT * FROM certificates')).rows).toHaveLength(100);expect(messages).toHaveLength(100);expect((await f.db.query('SELECT * FROM email_attempts')).rows).toHaveLength(100);expect((await batchDetail(again)).summary.pending).toBe(0);
   } finally {await f.db.close();}
