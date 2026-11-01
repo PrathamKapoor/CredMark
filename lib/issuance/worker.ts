@@ -31,7 +31,7 @@ export async function processClaim(repo:QueueRepository,item:Claim,options:Worke
     const snapshot=isSnapshot(certificate.render_snapshot)?certificate.render_snapshot:null;
     const baseUrl=snapshot?.baseUrl??process.env.NEXT_PUBLIC_BASE_URL;
     if(!baseUrl) throw new Error('Application URL is missing');
-    const message=makeCertificateMessage(certificate,baseUrl);
+    const message=makeCertificateMessage({...certificate,certificate_type:snapshot?.event?.certificate_type},baseUrl);
     if(lostLease) throw new Error('Stale or expired lease');
     // Both the lease and current validity are checked again atomically by begin_email_attempt.
     await repo.heartbeat(item,options.leaseSeconds);

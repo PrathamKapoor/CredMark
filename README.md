@@ -27,6 +27,8 @@ Create a frozen draft, review its recipients, and click **Issue & Distribute** t
 
 Recipient identity defaults to trimmed lowercase email. Supply a stable source-system recipient key when addresses may change. Logical identity combines event ID, recipient key and certificate type across batches: matching later batches reuse the certificate; conflicting recipient/template values are rejected. Use a distinct event/type for a distinct award. Existing historical identities are not guessed or merged. Reuse a request idempotency key only for the same payload.
 
+The event's certificate type selects the email wording: a type containing "winner" gets a congratulations message, "participant" or "participation" gets a thank-you message, and any other type gets the neutral "your certificate is ready" message. To email winners and participants of one event differently, create two events with the same name and different certificate types, each with its own CSV.
+
 The worker runs independently:
 
 ```sh

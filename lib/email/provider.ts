@@ -14,11 +14,18 @@ export function classifySmtpError(error:unknown):EmailResult {
   return {outcome:'ambiguous',error:'SMTP outcome is unknown; review required before another send'};
 }
 function html(value:string):string {return value.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));}
-export function makeCertificateMessage(certificate:{name:string;email:string;event_name:string;certificate_code:string},baseUrl:string):Omit<EmailMessage,'messageId'> {
+// Unrecognized types (e.g. "Runner-up") and legacy certificates without a frozen type keep the neutral wording.
+function certificateWording(certificateType:string|undefined,event:string):{subject:string;intro:string} {
+  const subjectEvent=event.replace(/[\r\n]/g,' ');
+  if(/\bwinners?\b/i.test(certificateType??'')) return {subject:`Congratulations! Your ${subjectEvent} winner certificate`,intro:`Congratulations on being a winner at ${event}! Your certificate is ready.`};
+  if(/\bparticipa(?:nts?|tion)\b/i.test(certificateType??'')) return {subject:`Thank you for participating in ${subjectEvent} – Certificate`,intro:`Thank you for participating in ${event}. Your certificate is ready.`};
+  return {subject:`${subjectEvent} – Certificate`,intro:`Your certificate for ${event} is ready.`};
+}
+export function makeCertificateMessage(certificate:{name:string;email:string;event_name:string;certificate_code:string;certificate_type?:string},baseUrl:string):Omit<EmailMessage,'messageId'> {
   const verify=new URL(`/verify/${encodeURIComponent(certificate.certificate_code)}`,baseUrl).toString();
   const download=new URL(`/api/verify/${encodeURIComponent(certificate.certificate_code)}/pdf`,baseUrl).toString();
-  const subject=`${certificate.event_name.replace(/[\r\n]/g,' ')} – Certificate`;
-  return {to:certificate.email,subject,html:`<p>Dear ${html(certificate.name)},</p><p>Your certificate for ${html(certificate.event_name)} is ready.</p><p><a href="${html(download)}">Download certificate</a> · <a href="${html(verify)}">Verify certificate</a></p><p>Code: ${html(certificate.certificate_code)}</p>`,text:`Dear ${certificate.name},\nYour certificate for ${certificate.event_name} is ready.\nDownload: ${download}\nVerify: ${verify}\nCode: ${certificate.certificate_code}`};
+  const {subject,intro}=certificateWording(certificate.certificate_type,certificate.event_name);
+  return {to:certificate.email,subject,html:`<p>Dear ${html(certificate.name)},</p><p>${html(intro)}</p><p><a href="${html(download)}">Download certificate</a> · <a href="${html(verify)}">Verify certificate</a></p><p>Code: ${html(certificate.certificate_code)}</p>`,text:`Dear ${certificate.name},\n${intro}\nDownload: ${download}\nVerify: ${verify}\nCode: ${certificate.certificate_code}`};
 }
 export function createEmailProvider():EmailProvider {
   const name=process.env.EMAIL_PROVIDER??'disabled';
